@@ -4,9 +4,7 @@ const { ApolloServer } = require("apollo-server");
 const typeDefs = gql`
   """
   do things here that show up in tools
-  """
-  union Footwear = Sneaker | Boot
-
+  """ #  union Footwear = Sneaker | Boot
   enum ShoeType {
     JORDAN
     NIKE
@@ -16,7 +14,8 @@ const typeDefs = gql`
   type User {
     email: String!
     avatar: String
-    friends: [User]!
+    #    friends: [User]!
+    shoes: [Shoe]!
   }
 
   #  type Query {
@@ -27,18 +26,21 @@ const typeDefs = gql`
   interface Shoe {
     brand: ShoeType!
     size: Int!
+    user: User!
   }
 
   type Sneaker implements Shoe {
     brand: ShoeType!
     size: Int!
     sport: String
+    user: User!
   }
 
   type Boot implements Shoe {
     brand: ShoeType!
     size: Int!
     hasGrip: Boolean
+    user: User!
   }
 
   input ShoesInput {
@@ -61,6 +63,28 @@ const typeDefs = gql`
   }
 `;
 
+const user = {
+  id: 1,
+  email: "yoda@masters.com",
+  avatar: "http://yoda.png",
+  // friends: []
+  shoes: []
+};
+
+const shoes = [
+    {
+        brand: "NIKE",
+        size: 12,
+        sport: "basketbaall",
+        user: 1
+    },
+    {
+        brand: "ADIDAS",
+        size: 14,
+        hasGrip: true,
+        user: 1
+    }
+];
 const resolvers = {
   Query: {
     shoes(_, { input }) {
@@ -68,26 +92,29 @@ const resolvers = {
         {
           brand: "NIKE",
           size: 12,
-          sport: "basketbaall"
+          sport: "basketbaall",
+          user: 1
         },
         {
           brand: "ADIDAS",
           size: 14,
-          hasGrip: true
+          hasGrip: true,
+          user: 1
         }
       ]; //.filter(shoe => shoe.brand === input.brand);
     },
     me() {
-      return {
-        email: "yoda@masters.com",
-        avatar: "http://yoda.png",
-        friends: []
-      };
+      return user;
     }
   },
   Mutation: {
     newShoe(_, { input }) {
       return input;
+    }
+  },
+  User: {
+    shoes(shoe) {
+      return shoe;
     }
   },
   Shoe: {
@@ -98,14 +125,24 @@ const resolvers = {
       return "Boot";
     }
   },
-  Footwear: {
-    __resolveType(shoe) {
-      if (shoe.sport) {
-        return "Sneaker";
-      }
-      return "Boot";
+  Sneaker: {
+    user(shoe) {
+      return user;
+    }
+  },
+  Boot: {
+    user(shoe) {
+      return user;
     }
   }
+  // Footwear: {
+  //   __resolveType(shoe) {
+  //     if (shoe.sport) {
+  //       return "Sneaker";
+  //     }
+  //     return "Boot";
+  //   }
+  // }
 };
 
 const server = new ApolloServer({

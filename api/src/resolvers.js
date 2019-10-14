@@ -1,7 +1,7 @@
 // import db from './db/db';
 /**
  * Here are your Resolvers for your Schema. They must match
- * the type definitions in your scheama
+ * the type definitions in your schema
  */
 
 module.exports = {
@@ -16,6 +16,7 @@ module.exports = {
     // pets(_, {input}, ctx)
     pets(_, args, ctx) {
       // return db;
+        console.log('QUERY -> pet')
       const { input } = args;
       return ctx.models.Pet.findMany(input);
       // return [
@@ -29,6 +30,7 @@ module.exports = {
     },
     pet(_, args, ctx) {
       const { input } = args;
+        console.log('QUERY -> pet')
       return ctx.models.Pet.findOne(input);
     }
   },
@@ -36,6 +38,11 @@ module.exports = {
     // id(pet){
     //   return 3;
     // }
+    owner(pet, __, ctx) {
+      // ctx.models.User.findById(pet.user.id)
+      console.log('PET -> owner')
+      return ctx.models.User.findOne({});
+    }
   },
   Mutation: {
     newPet(_, { input }, ctx) {
@@ -49,5 +56,12 @@ module.exports = {
   //       : "http://placekitten.com/300/300";
   //   }
   // },
-  User: {}
+  User: {
+    // Field level resolvers
+    // 1st argument -> User, since this under User field, the one that's resolved before this
+    pets(user, { input }, ctx) {
+      // return ctx.models.Pet.findMany({user: user.id})
+      return ctx.models.Pet.findMany();
+    }
+  }
 };
