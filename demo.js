@@ -5,6 +5,8 @@ const typeDefs = gql`
   """
   do things here that show up in tools
   """
+  union Footwear = Sneaker | Boot
+
   enum ShoeType {
     JORDAN
     NIKE
@@ -73,7 +75,7 @@ const resolvers = {
           size: 14,
           hasGrip: true
         }
-      ] //.filter(shoe => shoe.brand === input.brand);
+      ]; //.filter(shoe => shoe.brand === input.brand);
     },
     me() {
       return {
@@ -89,6 +91,14 @@ const resolvers = {
     }
   },
   Shoe: {
+    __resolveType(shoe) {
+      if (shoe.sport) {
+        return "Sneaker";
+      }
+      return "Boot";
+    }
+  },
+  Footwear: {
     __resolveType(shoe) {
       if (shoe.sport) {
         return "Sneaker";
