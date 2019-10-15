@@ -3,11 +3,21 @@
     "id": "jBWMVGjm50l6LGwepDoty",
     "username": "frontendmaster"
   },
-  "pet": [{
-    "id": 1,
-    "name": "scooby"
-  }, {
-    "id": 2,
-    "name": "moose"
-  }]
+  "pet": [
+    {
+      "id": 1,
+      "name": "scooby"
+    },
+    {
+      "id": 2,
+      "name": "moose"
+    },
+    {
+      "id": "RExnlnzzZD3mlsT7ZclDP",
+      "createdAt": 1571158136329,
+      "name": "batman",
+      "type": "DOG",
+      "user": "jBWMVGjm50l6LGwepDoty"
+    }
+  ]
 }
