@@ -29,9 +29,29 @@ const NEW_PET = gql`
 export default function Pets() {
   const [modal, setModal] = useState(false);
   const { data = {}, isLoading, error } = useQuery(ALL_PETS);
-  const [createPet, newPet = {}] = useMutation(NEW_PET);
+  const [createPet, newPet = {}] = useMutation(NEW_PET, {
+    update(cache, response) {
+      debugger;
+      const {
+        data: { addedPet }
+      } = response;
+      const { pets } = cache.readQuery({
+        query: ALL_PETS
+      });
+      cache.writeQuery({
+        query: ALL_PETS,
+        data: {
+          pets: pets.concat([addedPet])
+        }
+      });
+    }
+  });
 
-  const { loading: isNewPetloading, data: dataMutation = {}, error: isNewPetError } = newPet;
+  const {
+    loading: isNewPetloading,
+    data: dataMutation = {},
+    error: isNewPetError
+  } = newPet;
   const { addedPet } = dataMutation;
 
   debugger;
@@ -40,7 +60,7 @@ export default function Pets() {
   const { pets } = data;
   debugger;
 
-  if (isLoading || isNewPetloading) {
+  if (isLoading) {
     return <Loader />;
   }
 
@@ -57,6 +77,17 @@ export default function Pets() {
         newPet: {
           type,
           name
+        }
+      },
+      optimisticResponse: {
+        __typename: "Mutation",
+        addedPet: {
+          // This should look exactly like the response
+          id: "23",
+          img: "https://placedog.net/300/300?pet=SyervwfhN2pYFs5wLgU0F",
+          name,
+          type,
+          __typename: "Pet"
         }
       }
     });
