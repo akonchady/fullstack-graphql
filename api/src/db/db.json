@@ -7,30 +7,35 @@
     {
       "id": "1",
       "name": "fluffy",
-      "type": "dog"
+      "type": "dog",
+      "user": "scott"
     },
     {
       "id": "2",
       "name": "scotty",
-      "type": "cat"
+      "type": "cat",
+      "user": "adarsh"
     },
     {
       "id": "gBVi22cV_FSV_BMHrMbVo",
       "createdAt": 1571080079597,
       "name": "Scooby",
-      "type": "dog"
+      "type": "dog",
+      "user": "adarsh"
     },
     {
       "id": "-17HQ8SsXhdJt3BOuGZpR",
       "createdAt": 1571080189823,
       "name": "Scooby",
-      "type": "dog"
+      "type": "dog",
+      "user": "scott"
     },
     {
       "id": "wdPGH9dXa5DPy6igt048J",
       "createdAt": 1571081712259,
       "name": "Daryl",
-      "type": "dog"
+      "type": "dog",
+      "user": "scott"
     }
   ]
 }
