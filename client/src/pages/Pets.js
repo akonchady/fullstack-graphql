@@ -5,25 +5,36 @@ import PetsList from "../components/PetsList";
 import NewPetModal from "../components/NewPetModal";
 import Loader from "../components/Loader";
 
+const PETS_FIELDS = gql`
+  fragment PetsFields on Pet {
+    id
+    name
+    type
+    img
+    isVaccinated @client
+    owner {
+      id
+      age @client # This indicates this field is only on the client. Don't send to server
+    }
+  }
+`;
+
 const ALL_PETS = gql`
   query AllPets {
     pets {
-      name
-      id
-      img
+      ...PetsFields
     }
   }
+  ${PETS_FIELDS}
 `;
 
 const NEW_PET = gql`
   mutation CreateAPet($newPet: NewPetInput!) {
     addedPet: addPet(input: $newPet) {
-      id
-      name
-      type
-      img
+      ...PetsFields
     }
   }
+  ${PETS_FIELDS}
 `;
 
 export default function Pets() {
@@ -67,6 +78,8 @@ export default function Pets() {
   if (error || isNewPetError) {
     return <div>There was an error!</div>;
   }
+
+  console.log(data.pets);
 
   const onSubmit = input => {
     setModal(false);
