@@ -4,14 +4,14 @@ import Header from './Header'
 import Pets from '../pages/Pets'
 
 const App = () => (
-  <Fragment>
-    <Header />
-    <div>
-      <Switch>
-        <Route exact path="/" component={Pets} />
-      </Switch>
-    </div>
-  </Fragment>
+    <Fragment>
+        <Header />
+        <div>
+            <Switch>
+                <Route exact path="/" component={Pets} />
+            </Switch>
+        </div>
+    </Fragment>
 )
 
 export default App
